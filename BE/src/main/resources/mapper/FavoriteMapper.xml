@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.home.favorite.model.mapper.HouseMapper">
+
+	<select id="checkFavoriteOne" parameterType="favoriteListDto" resultType="favoriteListDto">
+		<![CDATA[
+				select * from favorite where PK = #{pk} and house_no = #{house_no} and addr_road = #{addr_road}
+			]]>
+	</select>
+
+	<select id="selectOneHome" parameterType="houseDto" resultType="houseDto">
+		<![CDATA[
+				select * from houseinfo where house_no = #{house_no} and addr_road = #{addr_road}
+			]]>
+	</select>
+		
+	<insert id="insertHome" parameterType="houseDto">
+		insert into houseinfo (house_no, addr_road,addr_dong,kind,house_name,household,floor,max_floor,complete_date,phone,content) 
+		values ( #{house_no},#{addr_road},#{addr_dong},#{kind} ,#{house_name}, #{household}, #{floor}, #{max_floor}, #{complete_date}, #{phone}, #{content} ) 
+	</insert>
+
+	<insert id="insertFavoriteList" parameterType="favoriteListDto">
+		insert into favorite (like_cnt,PK,house_no,addr_road) 
+		values ( #{like_cnt},#{pk},#{house_no}, #{addr_road} ) 
+	</insert>
+	
+	<delete id="deleteFavoriteList" parameterType="favoriteListDto">
+		delete from favorite where PK = #{pk} and house_no = #{house_no} and addr_road = #{addr_road}
+	</delete>
+	
+	<select id="selectFavoriteList" parameterType="string" resultType="favoriteListDto">
+		<![CDATA[
+				select * from favorite where PK = #{pk}
+			]]>
+	</select>
+	
+	<select id="selectFavoriteHome" parameterType="favoriteListDto" resultType="houseDto">
+		<![CDATA[
+				select * from houseinfo where house_no = #{house_no} and addr_road = #{addr_road}
+			]]>
+	</select>
+	
+	<update id="addHit" parameterType="houseDto">
+			<![CDATA[
+			update houseinfo
+			set hit = #{hit}
+			where house_no = #{house_no}
+		]]>
+	</update>
+	
+	<select id="searchBroker" parameterType="int" resultType="BrokerDto">
+		<![CDATA[
+				select * from brokerinfo where house_no = #{house_no} and addr_road = #{addr_road}
+			]]>
+	</select>
+	
+	<update id="addScore" parameterType="string">
+			<![CDATA[
+			update houseinfo
+			set hit = #{hit}
+			where house_no = #{house_no}
+		]]>
+	</update>
+	
+	<insert id="addComment" parameterType="commentDto">
+	insert into commentinfo ( house_no, addr_road,id,content,like_cnt,hate_cnt, password) 
+		values ( #{house_no},#{addr_road},#{id} , #{content}, #{like_cnt}, #{hate_cnt}, #{password}) 
+	</insert>
+	
+	<select id="showComments" parameterType="houseDto" resultType="commentDto">
+	<![CDATA[
+			select * 
+			from commentinfo
+			where house_no = #{house_no} and addr_road = #{addr_road}
+			
+		]]>
+	</select>
+	
+	<update id="updateLike" parameterType="commentDto">
+			<![CDATA[
+			update houseinfo
+			set like_cnt = #{like_cnt}
+			where house_no = #{house_no} and addr_road = #{addr_road} and comment_no = #{comment_no}
+		]]>
+	</update>
+	
+	<update id="updateHate" parameterType="commentDto">
+			<![CDATA[
+			update houseinfo
+			set hate_cnt = #{hate_cnt}
+			where house_no = #{house_no} and addr_road = #{addr_road} and comment_no = #{comment_no}
+		]]>
+
+	</update>
+	
+
+</mapper>
